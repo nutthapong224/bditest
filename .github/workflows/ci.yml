@@ -1,26 +1,46 @@
-  name: CI Test
+name: PR Test (CI)
 
-  on:
-    pull_request:
-      branches: [ main ]
+on:
+  pull_request:
+    branches: [ main ]
 
-  jobs:
-    test:
-      runs-on: ubuntu-latest
+jobs:
+  run-tests:
+    name: Run Unit Tests
+    runs-on: ubuntu-latest
 
-      steps:
-        - name: Checkout code
-          uses: actions/checkout@v4
+    steps:
+      - name: 🧾 Checkout code
+        uses: actions/checkout@v4
 
-        - name: Set up Python
-          uses: actions/setup-python@v5
-          with:
-            python-version: "3.12"
+      - name: 📢 แสดงรายละเอียดขั้นตอน
+        run: |
+          echo "=============================================="
+          echo "🚀 ต้องทำให้ระบบรันอัตโนมัติเมื่อเปิด Pull Request (PR)"
+          echo "ระบบต้องทำโดยอัตโนมัติ:"
+          echo "1. ติดตั้ง dependency (pip install -r requirements.txt)"
+          echo "2. รัน unit tests"
+          echo "3. ตรวจสอบว่า test ผ่านทั้งหมด"
+          echo "4. แสดงผล “Passed” หรือ “Failed” ในหน้า PR"
+          echo ""
+          echo "🎯 ผลลัพธ์ที่คาดหวัง:"
+          echo "• เมื่อเปิด PR → ระบบรันทันที"
+          echo "• ถ้า test ผ่าน → แสดงสถานะ ✅ success"
+          echo "• ถ้า test ล้มเหลว → แสดงสถานะ ❌ failed และ merge ไม่ได้"
+          echo "=============================================="
 
-        - name: Install dependencies
-          run: |
-            pip install -r requirements.txt
+      - name: 🐍 Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
 
-        - name: Run unit tests
-          run: |
-            pytest -v
+      - name: 📦 Install dependencies
+        run: |
+          echo "🔧 กำลังติดตั้ง dependencies..."
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: 🧪 Run unit tests with pytest
+        run: |
+          echo "🧪 เริ่มรัน unit tests..."
+          pytest -v
