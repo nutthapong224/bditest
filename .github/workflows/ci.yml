@@ -43,4 +43,10 @@ jobs:
       - name: 🧪 Run unit tests with pytest
         run: |
           echo "🧪 เริ่มรัน unit tests..."
-          pytest -v
+          echo "----------------------------------------"
+          if pytest -v; then
+            echo "✅ เทสผ่าน success"
+          else
+            echo "❌ ล้มเหลว failed และ merge ไม่ได้"
+            exit 1
+          fi
